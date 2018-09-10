@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import './Table.css';
 
 //TO DO:
 //
@@ -18,6 +19,8 @@ import './App.css';
 //
 //
 //
+var playerScore = 0;
+var dealerScore = 0;
 var playersTurn = true;
 var totalCards = 52;
 var suitCount = 13;
@@ -28,9 +31,53 @@ var dealersHand = [];
 var discardPile = [];
 var playerAce = false;
 var dealerAce = false;
-//endGame checks to see if the requiremnts to end the round are met
+function aceReducer(a){
+	//in this function have it see if it can run through an array and reduce
+	//aces down to 1 to bring the total value under 21
+}
+//compareScores is used to compare player and dealers
+function compareScores(playerscore, dealerscore) {
+	if (playerscore > dealerscore) {
+		alert('You won!');
+		yourHand = [];
+		dealersHand = [];
+		startGame();
+	} else if (playerscore === dealerscore) {
+		alert('Push, its a tie');
+		yourHand = [];
+		dealersHand = [];
+		startGame();
+	} else {
+		yourHand = [];
+		dealersHand = [];
+		alert('Dealer won :( ');
+		startGame();
+	}
+}
+//pass will have the dealer draw or settle based off its total card value
+function pass() {
+	playersTurn = false;
+	var total = addArray(dealersHand);
+	if (total < 16) {
+		dealersHand.push(transpose(shuffledDeck[0]));
+		shuffledDeck.shift();
+		console.log(dealersHand, addArray(dealersHand));
+	}
+	if (addArray(dealersHand) > 21) {
+		alert(' Dealer Busts You Win');
+		yourHand = [];
+		dealersHand = [];
+		startGame();
+	} else {
+		compareScores(addArray(yourHand), addArray(dealersHand));
+	}
+}
+
 function endGame(a) {
 	var a = addArray(a);
+	if (addArray(yourHand) === 21) {
+		pass();
+	}
 	if (a > 21) {
 		for (var i = 0; i < yourHand.length; i++) {
 			if (yourHand[i] == 11) {
@@ -43,19 +90,8 @@ function endGame(a) {
 			alert('you bust');
 			yourHand = [];
 			dealersHand = [];
+			startGame();
 		}
-
-		if (shuffledDeck.length < 33) {
-			console.log('Deck is being reshuffled');
-			console.log('Deck count is ' + shuffledDeck.length);
-
-			shuffledDeck = [];
-			for (var x = 0; x < 52; x++) {
-				var random = Math.floor(Math.random() * deck.length + 1);
-				shuffledDeck.push(deck[random]);
-			}
-		}
-		startGame();
 	}
 }
 //addArray combines the numeric value of an array and returns the total value
@@ -66,21 +102,16 @@ function addArray(a) {
 	}
 	return total;
 }
+
 //transpose changes the string value of a card into a number value.
 function transpose(a) {
 	var a = a;
 	var firstIndex = a.split(' ');
 	var newValue = 0;
-	console.log(a);
-	
-
 	if (firstIndex[0] == 'King' || firstIndex[0] == 'Queen' || firstIndex[0] == 'Jack') {
 		newValue = 10;
-	} else if (firstIndex[0] === 'Ace' && playerAce === false && firstIndex[0]) {
+	} else if (firstIndex[0] === 'Ace') {
 		newValue = 11;
-		playerAce = true;
-	} else if (firstIndex[0] === 'Ace' && playerAce === true) {
-		newValue = 1;
 	} else {
 		newValue = parseInt(firstIndex[0]);
 	}
@@ -88,6 +119,9 @@ function transpose(a) {
 }
 //startGame is what starts the game by dealing to players
 function startGame() {
+	if(shuffledDeck.length < 35){
+		shuffle()
+	}
 	for (var i = 1; i < 5; i++) {
 		if (i % 2 === 0) {
 			playerAce = false;
@@ -95,10 +129,21 @@ function startGame() {
 			shuffledDeck.shift();
 		} else {
 			dealerAce = false;
-			dealersHand.push(shuffledDeck[0]);
+			dealersHand.push(transpose(shuffledDeck[0]));
 			shuffledDeck.shift();
 		}
+		if (addArray(dealersHand) === 21) {
+			alert('Dealer wins, 21 on first draw');
+			yourHand = [];
+			dealersHand = [];
+			startGame();
+		}
+		if (addArray(yourHand) === 21) {
+			pass();
+		}
 	}
+	console.log('Your hand: ' + yourHand, '. total: ' + addArray(yourHand));
+	console.log('Dealers hand: ' + dealersHand, '. total: ' + addArray(dealersHand));
 	console.log('Deck length: ' + shuffledDeck.length);
 }
 //hitMe removes the top card and places it into the hand
@@ -112,15 +157,6 @@ function hitMe(a) {
 		}
 		console.log('In your hand is a ' + yourHand, '. With a total of ' + addArray(yourHand));
 		endGame(yourHand);
-	} else if ((playersTurn = false)) {
-		var card = transpose(a);
-		dealersHand.push(card);
-		shuffledDeck.shift();
-		if (addArray(dealersHand) > 11) {
-			dealerAce = true;
-		}
-		console.log('In dealers hand is a ' + dealersHand, '. With a total of ' + addArray(dealersHand));
-		endGame(dealersHand);
 	}
 }
 
@@ -178,37 +214,36 @@ for (var i = 0; i <= suitCount; i++) {
 	}
 }
 //shuffles the deck in the beginning
-for (var x = 0; x < 52; x++) {
-	var random = Math.floor(Math.random() * deck.length + 1);
-	shuffledDeck.push(deck[random]);
+function shuffle() {
+	shuffledDeck = []
+	for (var x = 0; x < 52; x++) {
+		var random = Math.floor(Math.random() * deck.length + 1);
+		shuffledDeck.push(deck[random]);
+	}
+	console.log("Deck has been re shuffled.")
 }
+shuffle()
 
 class App extends Component {
 	render() {
 		return (
-			<div class="row">
-				<div class="col s2">
-					<button class="btn" onClick={() => startGame()}>
-						startGame
-					</button>
-				</div>
-				<div class="col s2">
-					<button class="btn" onClick={() => hitMe(shuffledDeck[0])}>
-						Hit
-					</button>
-				</div>
-				<div class="col s2">
-					<button class="btn" onClick={() => startGame()}>
-						Pass
-					</button>
-				</div>
-				<div class="col s2">
-					<button class="btn" onClick={() => hitMe('Ace')}>
-						Ace Button
-					</button>
-					<button class="btn" onClick={() => hitMe('King')}>
-						King Button
-					</button>
+			<div>
+				<div class="row">
+					<div class="col s2">
+						<button class="btn" onClick={() => startGame()}>
+							startGame
+						</button>
+					</div>
+					<div class="col s2">
+						<button class="btn" onClick={() => hitMe(shuffledDeck[0])}>
+							Hit
+						</button>
+					</div>
+					<div class="col s2">
+						<button class="btn" onClick={() => pass()}>
+							Pass
+						</button>
+					</div>
 				</div>
 			</div>
 		);
