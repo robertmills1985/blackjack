@@ -4,7 +4,7 @@ import './App.css';
 //TO DO:
 //
 //write an if()  statement that will take into account when you bust to reduce the necessary ACES
-//down to a value of 1 to prevent busting.
+//down to a value of 1 to prevent busting. DONE
 //
 //
 //
@@ -28,7 +28,7 @@ var dealersHand = [];
 var discardPile = [];
 var playerAce = false;
 var dealerAce = false;
-
+//endGame checks to see if the requiremnts to end the round are met
 function endGame(a) {
 	var a = addArray(a);
 	if (a > 21) {
@@ -58,7 +58,7 @@ function endGame(a) {
 		startGame();
 	}
 }
-
+//addArray combines the numeric value of an array and returns the total value
 function addArray() {
 	var total = 0;
 	for (var i = 0; i < yourHand.length; i++) {
@@ -66,7 +66,7 @@ function addArray() {
 	}
 	return total;
 }
-//THAT FUCKING ACE
+//transpose changes the string value of a card into a number value.
 function transpose(a) {
 	var a = a;
 	var firstIndex = a.split(' ');
@@ -85,6 +85,7 @@ function transpose(a) {
 	}
 	return newValue;
 }
+//startGame is what starts the game by dealing to players
 function startGame() {
 	for (var i = 1; i < 5; i++) {
 		if (i % 2 === 0) {
@@ -99,6 +100,7 @@ function startGame() {
 	}
 	console.log('Deck length: ' + shuffledDeck.length);
 }
+//hitMe removes the top card and places it into the hand
 function hitMe(a) {
 	var card = transpose(a);
 	yourHand.push(card);
@@ -164,7 +166,7 @@ for (var i = 0; i <= suitCount; i++) {
 		deck.push('King of Clubs');
 	}
 }
-//shuffles the deck
+//shuffles the deck in the beginning
 for (var x = 0; x < 52; x++) {
 	var random = Math.floor(Math.random() * deck.length + 1);
 	shuffledDeck.push(deck[random]);
