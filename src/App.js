@@ -18,7 +18,7 @@ import './App.css';
 //
 //
 //
-
+var playersTurn = true;
 var totalCards = 52;
 var suitCount = 13;
 var deck = [];
@@ -59,10 +59,10 @@ function endGame(a) {
 	}
 }
 //addArray combines the numeric value of an array and returns the total value
-function addArray() {
+function addArray(a) {
 	var total = 0;
-	for (var i = 0; i < yourHand.length; i++) {
-		total = total + yourHand[i];
+	for (var i = 0; i < a.length; i++) {
+		total = total + a[i];
 	}
 	return total;
 }
@@ -72,6 +72,7 @@ function transpose(a) {
 	var firstIndex = a.split(' ');
 	var newValue = 0;
 	console.log(a);
+	
 
 	if (firstIndex[0] == 'King' || firstIndex[0] == 'Queen' || firstIndex[0] == 'Jack') {
 		newValue = 10;
@@ -102,15 +103,25 @@ function startGame() {
 }
 //hitMe removes the top card and places it into the hand
 function hitMe(a) {
-	var card = transpose(a);
-	yourHand.push(card);
-	shuffledDeck.shift();
-	if (addArray(yourHand) > 11) {
-		playerAce = true;
+	if ((playersTurn = true)) {
+		var card = transpose(a);
+		yourHand.push(card);
+		shuffledDeck.shift();
+		if (addArray(yourHand) > 11) {
+			playerAce = true;
+		}
+		console.log('In your hand is a ' + yourHand, '. With a total of ' + addArray(yourHand));
+		endGame(yourHand);
+	} else if ((playersTurn = false)) {
+		var card = transpose(a);
+		dealersHand.push(card);
+		shuffledDeck.shift();
+		if (addArray(dealersHand) > 11) {
+			dealerAce = true;
+		}
+		console.log('In dealers hand is a ' + dealersHand, '. With a total of ' + addArray(dealersHand));
+		endGame(dealersHand);
 	}
-	console.log('In your hand is a ' + yourHand, '. With a total of ' + addArray(yourHand));
-	endGame(yourHand);
-	//console.log('Will ace count as 1? ' +  playerAce)
 }
 
 //generates a deck
