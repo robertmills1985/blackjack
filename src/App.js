@@ -7,6 +7,19 @@ var shuffledDeck = [];
 var playerHand = [];
 var dealerHand = [];
 
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//ToDO: 
+//refactor  shuffle to deal with undefined indexes other than the band-aid i have in place already
+//create a function for staying ,
+// a function to compareHands,
+// a function for bustCheck, a function
+//to cycle through the dealers run after the player has stayed/passed
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 function generateDeck() {
 	for (var i = 0; i <= suitCount; i++) {
 		if (i == 1) {
@@ -112,6 +125,7 @@ function start() {
 		}
     }
     dialogue()
+
     if(firstDrawCheck(dealerHand) === true){
         alert('Dealer WON on first draw.')
         playerHand =[]
@@ -127,13 +141,51 @@ function firstDrawCheck(hand){
     if(addHand(hand) === 21)
     return true
 }
+function draw(hand){
+    //console.log(hand, hand.length)
+    //console.log(shuffledDeck)
+    var newArray = hand
+    newArray.push(shuffledDeck[0])
+    shuffledDeck.shift()
+    //console.log(newArray, newArray.length)
+    //for(var i = 0; i < newArray.length; i++){
+    //    console.log(newArray[i])
+    //}
+    dialogue()
+    return newArray
+}
+function compareScore(playerScore, dealerScore){
+    //after passing or staying, compare the scores between dealer and player
+}
+function pass(hand){
+	var newArray = hand
+	if(addHand(newArray) < 16){
+		newArray.push(shuffledDeck[0])
+		shuffledDeck.shift()
+	}
+	console.log(dealerHand, addHand(dealerHand))
+
+	return dealerHand = newArray
+}
+function aceReducer(hand){
+	//this will loop over a hand that bust and check to see if it can reduce
+	//any aces to take to avoid busting
+}
+///////////DEMO//////////////
+var demo = ['King','Ace','9']
+
 generateDeck();
 shuffle();
-start(shuffledDeck);
+start();
+
 
 class App extends Component {
 	render() {
-		return <div>hi</div>;
+		return (
+        <div>
+          <button class='btn' onClick={()=>draw(playerHand)} >Hit Me</button>  
+          <button class='btn' onClick={()=>pass(dealerHand)} >Stay</button>  
+        </div>)
 	}
 }
 export default App;
