@@ -9,12 +9,14 @@ var dealerHand = [];
 
 
 
-
-//change firstDrawCheck() to 21check() that just checks hand value and returns a boolean
-//this boolean will determine what to do inside other functions
-//im pretty fucked up so im not sure if this is useful.
-//
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//ToDO: 
+//refactor  shuffle to deal with undefined indexes other than the band-aid i have in place already
+//create a function for staying ,
+// a function to compareHands,
+// a function for bustCheck, a function
+//to cycle through the dealers run after the player has stayed/passed
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -152,7 +154,23 @@ function draw(hand){
     dialogue()
     return newArray
 }
+function compareScore(playerScore, dealerScore){
+    //after passing or staying, compare the scores between dealer and player
+}
+function pass(hand){
+	var newArray = hand
+	if(addHand(newArray) < 16){
+		newArray.push(shuffledDeck[0])
+		shuffledDeck.shift()
+	}
+	console.log(dealerHand, addHand(dealerHand))
 
+	return dealerHand = newArray
+}
+function aceReducer(hand){
+	//this will loop over a hand that bust and check to see if it can reduce
+	//any aces to take to avoid busting
+}
 ///////////DEMO//////////////
 var demo = ['King','Ace','9']
 
@@ -166,7 +184,7 @@ class App extends Component {
 		return (
         <div>
           <button class='btn' onClick={()=>draw(playerHand)} >Hit Me</button>  
-          <button class='btn' >Stay</button>  
+          <button class='btn' onClick={()=>pass(dealerHand)} >Stay</button>  
         </div>)
 	}
 }
