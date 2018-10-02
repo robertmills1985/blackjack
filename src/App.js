@@ -194,10 +194,10 @@ class App extends Component {
 					</div>
 					<div class="center">
 					<div class="row">
-						<button class="btn green col s2 push-s3 btn-mrg" onClick={() => draw(playerHand)}>
+						<button class="btn green col s2 push-s3 btn-mrg hoverable z-depth-2" onClick={() => draw(playerHand)}>
 							Hit Me
 						</button>
-						<button class="btn red col s2 push-s3 btn-mrg" onClick={() => pass(dealerHand)}>
+						<button class="btn red col s2 push-s3 btn-mrg hoverable z-depth-2" onClick={() => pass(dealerHand)}>
 							Stay
 						</button>
 					</div>

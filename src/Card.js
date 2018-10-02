@@ -15,6 +15,10 @@ var d1 = [ 'Card 1', 'Card 2' ];
 class Card extends Component {
 	constructor() {
         super();
+
+        this.state = {
+            hand: ["Ace of Spades","King of Hearts"]
+        }
 	}
 	render() {
 		function scanHand(inHand) {
