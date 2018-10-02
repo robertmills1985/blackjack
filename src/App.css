@@ -4,3 +4,13 @@
     height:500px;
     border-radius: 15px;
 }
+.hand-panel {
+    padding-top: 20px;
+    padding-bottom: 10px;
+    margin-top: 100px;
+    margin-bottom:100px;
+    width: 300px;
+}
+.btn-mrg {
+    margin:10px;
+}

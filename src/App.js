@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import './App.css';
+
+import Card from './Card';
 
 var deck = [];
 var suitCount = 13;
@@ -7,18 +10,14 @@ var shuffledDeck = [];
 var playerHand = [];
 var dealerHand = [];
 
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//ToDO: 
+//ToDO:
 //refactor  shuffle to deal with undefined indexes other than the band-aid i have in place already
 //create a function for staying ,
 // a function to compareHands,
 // a function for bustCheck, a function
 //to cycle through the dealers run after the player has stayed/passed
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
 function generateDeck() {
 	for (var i = 0; i <= suitCount; i++) {
@@ -114,7 +113,7 @@ function addHand(hand) {
 	return total;
 }
 function start() {
-    console.log('New hand has started');
+	console.log('New hand has started');
 	for (var i = 1; i <= 4; i++) {
 		if (i % 2 === 0) {
 			playerHand.push(shuffledDeck[0]);
@@ -123,69 +122,90 @@ function start() {
 			dealerHand.push(shuffledDeck[0]);
 			shuffledDeck.shift();
 		}
-    }
-    dialogue()
+	}
+	dialogue();
 
-    if(firstDrawCheck(dealerHand) === true){
-        alert('Dealer WON on first draw.')
-        playerHand =[]
-        dealerHand =[]
-        start()
-    }
+	if (firstDrawCheck(dealerHand) === true) {
+		alert('Dealer WON on first draw.');
+		playerHand = [];
+		dealerHand = [];
+		start();
+	}
 }
 function dialogue() {
 	console.log('Dealer has: ' + dealerHand + ' for a total of ' + addHand(dealerHand));
 	console.log('You have: ' + playerHand + ' for a total of ' + addHand(playerHand));
 }
-function firstDrawCheck(hand){
-    if(addHand(hand) === 21)
-    return true
+function firstDrawCheck(hand) {
+	if (addHand(hand) === 21) return true;
 }
-function draw(hand){
-    //console.log(hand, hand.length)
-    //console.log(shuffledDeck)
-    var newArray = hand
-    newArray.push(shuffledDeck[0])
-    shuffledDeck.shift()
-    //console.log(newArray, newArray.length)
-    //for(var i = 0; i < newArray.length; i++){
-    //    console.log(newArray[i])
-    //}
-    dialogue()
-    return newArray
+function draw(hand) {
+	//console.log(hand, hand.length)
+	//console.log(shuffledDeck)
+	var newArray = hand;
+	newArray.push(shuffledDeck[0]);
+	shuffledDeck.shift();
+	//console.log(newArray, newArray.length)
+	//for(var i = 0; i < newArray.length; i++){
+	//    console.log(newArray[i])
+	//}
+	dialogue();
+	return newArray;
 }
-function compareScore(playerScore, dealerScore){
-    //after passing or staying, compare the scores between dealer and player
+function compareScore(playerScore, dealerScore) {
+	//after passing or staying, compare the scores between dealer and player
 }
-function pass(hand){
-	var newArray = hand
-	if(addHand(newArray) < 16){
-		newArray.push(shuffledDeck[0])
-		shuffledDeck.shift()
+function pass(hand) {
+	var newArray = hand;
+	if (addHand(newArray) < 16) {
+		newArray.push(shuffledDeck[0]);
+		shuffledDeck.shift();
 	}
-	console.log(dealerHand, addHand(dealerHand))
+	console.log(dealerHand, addHand(dealerHand));
 
-	return dealerHand = newArray
+	return (dealerHand = newArray);
 }
-function aceReducer(hand){
+function aceReducer(hand) {
 	//this will loop over a hand that bust and check to see if it can reduce
 	//any aces to take to avoid busting
 }
 ///////////DEMO//////////////
-var demo = ['King','Ace','9']
+var demo = [ 'King', 'Ace', '9' ];
 
 generateDeck();
 shuffle();
 start();
 
-
 class App extends Component {
+	constructor(){
+		super()
+	}
 	render() {
 		return (
-        <div>
-          <button class='btn' onClick={()=>draw(playerHand)} >Hit Me</button>  
-          <button class='btn' onClick={()=>pass(dealerHand)} >Stay</button>  
-        </div>)
+			<div>
+				<div class="container">
+					<div class="row">
+						<div class="col s6">
+							<Card hand={playerHand} />
+						</div>
+						<div class="col s6">
+							<Card hand={dealerHand} />
+						</div>
+					</div>
+					<div class="center">
+					<div class="row">
+						<button class="btn green col s2 push-s3 btn-mrg hoverable z-depth-2" onClick={() => draw(playerHand)}>
+							Hit Me
+						</button>
+						<button class="btn red col s2 push-s3 btn-mrg hoverable z-depth-2" onClick={() => pass(dealerHand)}>
+							Stay
+						</button>
+					</div>
+				</div>
+				</div>
+				
+			</div>
+		);
 	}
 }
 export default App;
